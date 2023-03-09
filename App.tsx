@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, HStack, VStack, Text } from "@react-native-material/core";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import HistoryTime from "./historyTime";
 import Display from "./display";
 import { styles } from "./styles";
@@ -14,21 +14,21 @@ const App = () => {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [customInterval, setCustomInterval] = useState<NodeJS.Timer>();
-  const [previousTime, setPreviousTime] = useState<ITime[]>([]);
-  const [running, setRunning] = useState<boolean>(false);
+  const [previousTime, setPreviousTime] = useState<ITime[]>([]); //array que salva os valores 
+  const [running, setRunning] = useState<boolean>(false); //flag para dinamizar interface
 
   const startTimer = () => {
-    setRunning(true)
+    setRunning(true);
     setCustomInterval(
       setInterval(() => {
-        changeTimer()
+        changeTimer();
       }, 1000)
     );
   };
 
   const stopTimer = () => {
-    setRunning(false)
-    clearInterval(customInterval)
+    setRunning(false);
+    clearInterval(customInterval);
   };
 
   const saveTime = () => {
@@ -49,8 +49,6 @@ const App = () => {
     setMinutes(0);
   };
   const changeTimer = () => {
-    console.log(running);
-    console.log(customInterval);
     setSeconds((prevState) => {
       if (prevState + 1 === 60) {
         setMinutes(minutes + 1);
@@ -85,6 +83,10 @@ const App = () => {
         </HStack>
       )}
       <VStack>
+        {previousTime.length && <HStack m={10} spacing={30}>
+          <Text variant="subtitle1">Número do registro</Text>
+          <Text variant="subtitle1">Tempo</Text>
+        </HStack>}
         {previousTime.map((time, index) => (
           <HistoryTime index={index} time={time} key={index} />
         ))}
